@@ -1,5 +1,12 @@
 import cv2
+
 cap = cv2.VideoCapture(0)  # 0 is usually the default camera
+
+frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+fps = cap.get(cv2.CAP_PROP_FPS)
+codec = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('output.avi', codec, fps, (frame_width, frame_height))
 if not cap.isOpened():
     print("Error: Could not open video.")
 else:
@@ -10,6 +17,7 @@ else:
         if not ret:
             print("Error: Could not read frame.")
             break
+        out.write(frame)  # Save the frame to the output file
         cv2.imshow('Video Capture', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
